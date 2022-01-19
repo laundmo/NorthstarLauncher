@@ -171,12 +171,12 @@ DWORD WINAPI SocketInputThread(PVOID pThreadParameter) {
 				char buf[1024];
 				memset(buf, 0, sizeof buf);
 				len = recv(connectedSocket, buf, 1024, 0);
-				if (len == 0) break;
+				if (len <= 0) break;
 				spdlog::info("socket recv: {}", buf);
 				receive += buf;
 			}
 			spdlog::info("recv loop stopped");
-			if (len == 0) {
+			if (len <= 0) {
 				spdlog::info("len = 0, break");
 				break;
 			}
