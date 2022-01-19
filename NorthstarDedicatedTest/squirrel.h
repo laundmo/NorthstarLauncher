@@ -180,7 +180,7 @@ public:
 			compileResult = ClientSq_compilebuffer(sqvm2, &bufferState, "console", -1, context);
 		else if (context == ScriptContext::SERVER)
 			compileResult = ServerSq_compilebuffer(sqvm2, &bufferState, "console", -1, context);
-
+		spdlog::info("CompileBuffer: {} {} {}", bufferState.buffer, bufferState.bufferPlusLength, bufferState.bufferAgain);
 		spdlog::info("sq_compilebuffer returned {}", compileResult);
 		if (compileResult >= 0)
 		{
@@ -196,6 +196,37 @@ public:
 				SQRESULT callResult = ServerSq_call(sqvm2, 1, false, false);
 				spdlog::info("sq_call returned {}", callResult);
 			}
+		}
+	}
+
+	void ExecuteGetResultCode(const char* code)
+	{
+		// ttf2sdk checks ThreadIsInMainThread here, might be good to do that? doesn't seem like an issue rn tho
+
+		if (!sqvm)
+		{
+			spdlog::error("Cannot execute code, {} squirrel vm is not initialised", GetContextName(context));
+			return;
+		}
+
+		spdlog::info("Executing {} script code {} ", GetContextName(context), code);
+
+		std::string strCode(code);
+		CompileBufferState bufferState = CompileBufferState(strCode);
+
+		SQRESULT compileResult;
+		compileResult = ServerSq_compilebuffer(sqvm2, &bufferState, "console", -1, context);
+		spdlog::info("CompileBuffer: {} {} {}", bufferState.buffer, bufferState.bufferPlusLength, bufferState.bufferAgain);
+		spdlog::info("sq_compilebuffer returned {}", compileResult);
+		if (compileResult >= 0) {
+			ServerSq_pushroottable(sqvm2);
+			// enable custom spdlog sink
+			SQRESULT callResult = ServerSq_call(sqvm2, 1, false, false);
+			// disable custom spdlog sink
+			// should allow us to capture just the result of executing the squirrel
+			// do the same with commands?
+			// sink will have to lock the enabled/disable methods.
+			spdlog::info("sq_call returned {}", callResult);
 		}
 	}
 

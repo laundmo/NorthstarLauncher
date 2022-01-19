@@ -116,6 +116,7 @@
     <ClInclude Include="dedicatedmaterialsystem.h" />
     <ClInclude Include="filesystem.h" />
     <ClInclude Include="gameutils.h" />
+    <ClInclude Include="remotesocket.h" />
     <ClInclude Include="hooks.h" />
     <ClInclude Include="hookutils.h" />
     <ClInclude Include="include\crypto\aes_platform.h" />
@@ -585,6 +586,7 @@
     <ClCompile Include="serverauthentication.cpp" />
     <ClCompile Include="miscserverscript.cpp" />
     <ClCompile Include="sigscanning.cpp" />
+    <ClCompile Include="remotesocket.cpp" />
     <ClCompile Include="sourceconsole.cpp" />
     <ClCompile Include="sourceinterface.cpp" />
     <ClCompile Include="squirrel.cpp" />
@@ -620,7 +622,7 @@
     <None Include="include\spdlog\fmt\bundled\LICENSE.rst" />
   </ItemGroup>
   <ItemGroup>
-	  <None Include="..\Northstar-Legal.txt" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\Northstar-Legal.txt" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

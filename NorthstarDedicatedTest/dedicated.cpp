@@ -3,6 +3,7 @@
 #include "hookutils.h"
 #include "gameutils.h"
 #include "serverauthentication.h"
+#include "remotesocket.h"
 
 bool IsDedicated()
 {
@@ -426,10 +427,12 @@ void InitialiseDedicated(HMODULE engineAddress)
 		}
 	} else spdlog::info("Quick Edit enabled by user request");
 
+	SetupSocketRemote();
 	// create console input thread
 	if (!CommandLine()->CheckParm("-noconsoleinput"))
 		consoleInputThreadHandle = CreateThread(0, 0, ConsoleInputThread, 0, 0, NULL);
 	else spdlog::info("Console input disabled by user request");
+
 }
 
 void InitialiseDedicatedOrigin(HMODULE baseAddress)
