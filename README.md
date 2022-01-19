@@ -15,3 +15,5 @@ Ports:
 - `9998` for logs, server only sends
 
 Squirrel scripts sent to the socket have to start with a line just containing `BOF` and end with a line just containing `EOF`
+
+The sockets currently bind to any interface, and the ports are currently not configurable. They also dont require any authentication, so make sure that they are not port forwarded or otherwise available publically.
