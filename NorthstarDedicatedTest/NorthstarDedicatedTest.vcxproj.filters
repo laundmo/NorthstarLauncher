@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0"
+  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
@@ -1443,6 +1444,9 @@
     <ClInclude Include="remotesocket.h">
       <Filter>Header Files\Dedicated</Filter>
     </ClInclude>
+    <ClInclude Include="buildainfile.h">
+      <Filter>Header Files\Server</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -1573,6 +1577,9 @@
     </ClCompile>
     <ClCompile Include="remotesocket.cpp">
       <Filter>Source Files\Dedicated</Filter>
+    </ClCompile>
+    <ClCompile Include="buildainfile.cpp">
+      <Filter>Source Files\Server</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

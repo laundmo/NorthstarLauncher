@@ -109,6 +109,7 @@
   <ItemGroup>
     <ClInclude Include="audio.h" />
     <ClInclude Include="bansystem.h" />
+    <ClInclude Include="buildainfile.h" />
     <ClInclude Include="chatcommand.h" />
     <ClInclude Include="clientauthhooks.h" />
     <ClInclude Include="concommand.h" />
@@ -551,6 +552,7 @@
   <ItemGroup>
     <ClCompile Include="audio.cpp" />
     <ClCompile Include="bansystem.cpp" />
+    <ClCompile Include="buildainfile.cpp" />
     <ClCompile Include="chatcommand.cpp" />
     <ClCompile Include="clientauthhooks.cpp" />
     <ClCompile Include="concommand.cpp" />
@@ -628,9 +630,6 @@
   </ItemGroup>
   <ItemGroup>
     <MASM Include="audio_asm.asm" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Northstar-Legal.txt" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
