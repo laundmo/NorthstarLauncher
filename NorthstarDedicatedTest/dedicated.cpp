@@ -66,6 +66,7 @@ void RunServer(CDedicatedExports* dedicated)
 	{
 		double frameStart = Plat_FloatTime();
 		g_pEngine->Frame();
+		CallQueuedSquirrel();
 
 		// only update the title after at least 500ms since the last update
 		if ((frameStart - frameTitle) > 0.5) {

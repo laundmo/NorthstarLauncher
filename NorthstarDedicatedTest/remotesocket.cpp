@@ -21,24 +21,25 @@
 
 Concurrency::concurrent_queue<std::string> outgoingSocketString;
 Concurrency::concurrent_queue<std::string> commandResultString;
+Concurrency::concurrent_queue<std::string> scriptRunQueue;
 
 bool send_to_command_result = false;
 
-void PushStringToSocket(std::string send) {
-	if (outgoingSocketString.unsafe_size() > 2000) {
+void unsafePush(Concurrency::concurrent_queue<std::string> &queue, std::string content) {
+	if (queue.unsafe_size() > 2000) {
 		std::string outstring;
-		outgoingSocketString.try_pop(outstring);
+		queue.try_pop(outstring);
+		outstring.clear();
 	}
-	if (send_to_command_result) {
-		if (commandResultString.unsafe_size() > 2000) {
-			std::string outstring;
-			commandResultString.try_pop(outstring);
-		}
-		commandResultString.push(send);
-	}
-	outgoingSocketString.push(send);
+	queue.push(content);
 }
 
+void PushStringToSocket(std::string send) {
+	unsafePush(outgoingSocketString, send);
+	if (send_to_command_result) {
+		unsafePush(commandResultString, send);
+	}
+}
 
 std::string replaceAll(std::string str, const std::string& from, const std::string& to)
 {
@@ -127,20 +128,6 @@ bool setupListenSocket(SOCKET& acceptSocket, int port) {
 	return true;
 }
 
-void stopAndSendCapture(SOCKET& connectedSocket) {
-	send_to_command_result = false;
-	long res;
-	do {
-		std::string outstring;
-		if (commandResultString.try_pop(outstring)) {
-			res = send(connectedSocket, outstring.c_str(), outstring.size(), 0);
-		}
-		else {
-			break;
-		}
-	} while (commandResultString.unsafe_size() > 0);
-}
-
 DWORD WINAPI SocketInputThread(PVOID pThreadParameter) {
 	while (!g_pEngine || !g_pHostState || g_pHostState->m_iCurrentState != HostState_t::HS_RUN)
 		Sleep(1000);
@@ -194,9 +181,7 @@ DWORD WINAPI SocketInputThread(PVOID pThreadParameter) {
 				if (line == "EOF") {
 					spdlog::info("EOF, running command");
 					is_script = false;
-					send_to_command_result = true;
-					g_ServerSquirrelManager->ExecuteCode(script.c_str());
-					stopAndSendCapture(connectedSocket);
+					unsafePush(scriptRunQueue, script);
 					script.clear();
 				}
 				else {
@@ -210,9 +195,7 @@ DWORD WINAPI SocketInputThread(PVOID pThreadParameter) {
 				}
 				else {
 					line += '\n';
-					send_to_command_result = true;
 					Cbuf_AddText(Cbuf_GetCurrentPlayer(), line.c_str(), cmd_source_t::kCommandSrcCode);
-					stopAndSendCapture(connectedSocket);
 				}
 
 			}
@@ -264,10 +247,16 @@ DWORD WINAPI SocketOutputThread(PVOID pThreadParameter) {
 
 }
 
+void CallQueuedSquirrel() {
+	std::string script;
+	if (scriptRunQueue.try_pop(script)){
+		g_ServerSquirrelManager->ExecuteCode(script.c_str());
+		script.clear();
+	}
+}
 
 void SetupSocketRemote() {
 	socketInputThreadHandle = CreateThread(0, 0, SocketInputThread, 0, 0, NULL);
-
 	socketOutputThreadHandle = CreateThread(0, 0, SocketOutputThread, 0, 0, NULL);
 	setSocketSink();
 }
