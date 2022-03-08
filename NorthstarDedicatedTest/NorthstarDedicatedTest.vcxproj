@@ -121,6 +121,7 @@
     <ClInclude Include="dedicatedmaterialsystem.h" />
     <ClInclude Include="filesystem.h" />
     <ClInclude Include="gameutils.h" />
+    <ClInclude Include="modfileapi.h" />
     <ClInclude Include="hooks.h" />
     <ClInclude Include="hookutils.h" />
     <ClInclude Include="include\crypto\aes_platform.h" />
@@ -595,6 +596,7 @@
     <ClCompile Include="serverauthentication.cpp" />
     <ClCompile Include="miscserverscript.cpp" />
     <ClCompile Include="sigscanning.cpp" />
+    <ClCompile Include="modfileapi.cpp" />
     <ClCompile Include="sourceconsole.cpp" />
     <ClCompile Include="sourceinterface.cpp" />
     <ClCompile Include="squirrel.cpp" />

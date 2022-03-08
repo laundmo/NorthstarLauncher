@@ -36,6 +36,7 @@
 #include "configurables.h"
 #include <string.h>
 #include "pch.h"
+#include "modfileapi.h"
 
 bool initialised = false;
 
@@ -131,6 +132,7 @@ bool InitialiseNorthstar()
 	AddDllLoadCallback("server.dll", InitialiseMiscServerScriptCommand);
 	AddDllLoadCallback("server.dll", InitialiseMiscServerFixes);
 	AddDllLoadCallback("server.dll", InitialiseBuildAINFileHooks);
+	AddDllLoadCallback("server.dll", InitialiseModFileApiServer);
 
 	AddDllLoadCallback("engine.dll", InitialisePlaylistHooks);
 

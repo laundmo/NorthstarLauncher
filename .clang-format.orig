@@ -1,0 +1,18 @@
+Language: Cpp
+Standard: Auto
+IndentWidth: 4
+TabWidth: 4
+UseCRLF: false
+SpacesInSquareBrackets: false
+SpacesInParentheses: false
+UseTab: Always
+ColumnLimit: 140
+BreakBeforeBraces: Allman
+AlignAfterOpenBracket: AlwaysBreak
+IndentExternBlock: Indent
+PointerAlignment: Left
+<<<<<<< HEAD
+SortIncludes: false
+=======
+SortIncludes: false
+>>>>>>> 1fda5cab9d18346e049cf84a9e791bbf89b7a861
